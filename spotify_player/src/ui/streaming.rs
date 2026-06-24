@@ -335,22 +335,26 @@ fn smooth_bands(bands: &mut [f32], scratch: &mut [f32]) {
 /// Maps a normalised amplitude [0, 1] to an RGB colour.
 /// Quiet (0.0) → cool blue, medium → green, loud (1.0) → hot red.
 fn bar_color(t: f32) -> Color {
-    let (r, g, b) = if t < 0.5 {
-        let s = t * 2.0;
-        (
-            (30.0 + 20.0 * s) as u8,
-            (100.0 + 155.0 * s) as u8,
-            (255.0 * (1.0 - s * 0.5)) as u8,
-        )
+    if false {
+        let (r, g, b) = if t < 0.5 {
+            let s = t * 2.0;
+            (
+                (30.0 + 20.0 * s) as u8,
+                (100.0 + 155.0 * s) as u8,
+                (255.0 * (1.0 - s * 0.5)) as u8,
+            )
+        } else {
+            let s = (t - 0.5) * 2.0;
+            (
+                (50.0 + 205.0 * s) as u8,
+                (255.0 * (1.0 - s)) as u8,
+                (128.0 * (1.0 - s)) as u8,
+            )
+        };
+        Color::Rgb(r, g, b)
     } else {
-        let s = (t - 0.5) * 2.0;
-        (
-            (50.0 + 205.0 * s) as u8,
-            (255.0 * (1.0 - s)) as u8,
-            (128.0 * (1.0 - s)) as u8,
-        )
-    };
-    Color::Rgb(r, g, b)
+        Color::LightCyan
+    }
 }
 
 /// Render a frequency-band bar chart using live FFT data from the audio sink.
